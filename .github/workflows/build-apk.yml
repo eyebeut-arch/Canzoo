@@ -20,7 +20,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-          cache: gradle
 
       - name: Check project files
         run: |
@@ -29,16 +28,13 @@ jobs:
           echo "Contenu du dossier app :"
           ls -la app || true
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Check Gradle wrapper
-        run: |
-          ls -l ./gradlew
-          ./gradlew --version
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.7
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: gradle assembleDebug --stacktrace
 
       - name: Find APK
         run: |
